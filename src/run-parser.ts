@@ -14,7 +14,7 @@ async function main() {
   // Notice the difference between "of" and "in". One iterates over the entries, 
   // another iterates over the indexes only.
 
-  if(results !== undefined) {
+  if(results !== undefined && Array.isArray(results)) {
     for(const record of results)
       console.log(record)
     for(const record in results)
