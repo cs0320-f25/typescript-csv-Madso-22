@@ -41,18 +41,18 @@ export async function parseCSV<T>(path: string, schema: ZodType<T> | undefined):
   // More on this in class soon!
 
 
-  //all values split on comma are pushed onto an array
+  //all lines of csv that were split based on comma location are pushed onto an array
   for await (const line of rl) {
     const values = line.split(",").map((v) => v.trim());
     result.push(values)
   }
  
-  //if the schema is undefined, the original format result (2-D Array) is returned
+  //if the schema is undefined, the 2-D Array created above is returned.
   if (schema === undefined){
       return result
     }
 
-  //parse is run on each split array in result. If successful, the parsed result will be returned
+  //parse is run on each split array in result. If successful, the parsed result will be added to a new array
   for (let i = 0; i < result.length; i++) {
     if (i !== 0) { //ignores first row
       const rowPreParse = schema.safeParse(result[i])
@@ -61,10 +61,11 @@ export async function parseCSV<T>(path: string, schema: ZodType<T> | undefined):
         schemResult.push(resSchem)
       }
       else{
-        return {error: 'schema parse', arg: result[i]}
+        return {error: 'schema parse', arg: result[i]} //parseError return if parsing is not successful
       }
     }
   }
+  //array of successfully parsed schemas will be returned
   return schemResult
   
  

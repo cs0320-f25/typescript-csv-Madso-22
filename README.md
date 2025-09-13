@@ -33,16 +33,29 @@
 ### 1340 Supplement
 
 - #### 1. Correctness
+    A CSV parser is correct if it can take in CSVs with many different kinds of data and still be able to parse them all correctly. If it cannot parse something, like a csv that has rows with inconsistent data, it should provide solid communication to the caller and thorougly explain what the issue is. It should also be able to tell the difference between when quotes/commas are used to separate values and when they are being used within a value. It should not get tripped up by the existence of multiple commas within one value. 
 
 - #### 2. Random, On-Demand Generation
+    A function like that would make it much easier to test all the different cases a parser might encounter with different callers. It is much harder as a human to try and make hundreds of different csvs yourself that will be reasonably different; this would facilitate that process.
 
 - #### 3. Overall experience, Bugs encountered and resolved
-#### Errors/Bugs:
+    Overall experience was pretty solid. I got frustrated at many points due to not understanding fully how certain things like type-checking and schemas worked, but once I figured these things out, it was better to get into a rhythm and crank out a working implementation.
+#### Errors/Bugs: 
+    I had a couple bugs when it came to trying to index into my results in my tests because my parseCSV function could potentially return a parseError. I fixed this by checking that results were arrays before indexing into them. I also made a mistake when writing my for loop in the parser that caused it to return a value before the loop was finished iterating through all the necessary values. To fix this, I just moved my return statement out of the loop
 #### Tests:
+    Testing took me a long time, mostly because I was having trouble figuring how to test different aspects the function without getting rigorously type-checked by typescript. 
 #### How To…
+    (not really sure what this field means so I guessed!) I was initially confused about how to handle parameters and return types but after some consultation of ed and co-pilot, I was able to get a good sense of what to do!
 
 #### Team members and contributions (include cs logins):
+    mpolds
 
 #### Collaborators (cslogins of anyone you worked with on this project and/or generative AI):
+    chatGPT - asked to expand my persoectives on edge cases to test
+    copilot - asked it about type-checking when working on tests
+
+
 #### Total estimated time it took to complete project:
+    6-8 hours
 #### Link to GitHub Repo:  
+    https://github.com/cs0320-f25/typescript-csv-Madso-22.git
