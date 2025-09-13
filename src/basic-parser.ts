@@ -21,7 +21,7 @@ interface ParseError {
   arg: Array<string>
 }
   
-export async function parseCSV<T>(path: string, schema: ZodType<T>): Promise<string[][] | T[] | ParseError | undefined> {
+export async function parseCSV<T>(path: string, schema: ZodType<T> | undefined): Promise<string[][] | T[] | ParseError | undefined> {
   // This initial block of code reads from a file in Node.js. The "rl"
   // value can be iterated over in a "for" loop. 
   

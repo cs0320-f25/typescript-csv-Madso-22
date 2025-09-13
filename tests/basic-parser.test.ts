@@ -105,6 +105,20 @@ test("parseCSV works with schemas people", async () => {
   }
 });
 
+test("parseCSV works with schemas people", async () => {
+  const resultsP = await parseCSV(PEOPLE_CSV_PATH, undefined) 
+  if (resultsP !== undefined) {
+    expect(Array.isArray(resultsP)).toBe(true)
+    if(Array.isArray(resultsP)) {
+      expect(Array.isArray(resultsP[0])).toBe(true)
+      expect(Array.isArray(resultsP[1])).toBe(true)
+      expect(Array.isArray(resultsP[2])).toBe(true)
+      expect(Array.isArray(resultsP[3])).toBe(true)
+      expect(Array.isArray(resultsP[4])).toBe(true)
+    }
+  }
+});
+
 
 
 
