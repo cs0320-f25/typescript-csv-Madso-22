@@ -21,7 +21,7 @@ interface ParseError {
   arg: Array<string>
 }
   
-export async function parseCSV<T>(path: string, schema: ZodType<T>): Promise<string[][] | T[] | ParseError | undefined> {
+export async function parseCSV<T>(path: string, schema: ZodType<T>): Promise<string[][] | T[] | undefined> {
   // This initial block of code reads from a file in Node.js. The "rl"
   // value can be iterated over in a "for" loop. 
   
@@ -34,26 +34,39 @@ export async function parseCSV<T>(path: string, schema: ZodType<T>): Promise<str
   
   // Create an empty array to hold the results
   let result = []
+  let schemResult = []
   
   // We add the "await" here because file I/O is asynchronous. 
   // We need to force TypeScript to _wait_ for a row before moving on. 
   // More on this in class soon!
+
+
+  //all values split on comma are pushed onto an array
   for await (const line of rl) {
     const values = line.split(",").map((v) => v.trim());
-    if (schema === undefined){
-      result.push(values)
-      return result
-    }
-    const rowPreParse = schema.safeParse(values)
-    if (rowPreParse.success) {
-      const resSchem = schema.parse(values) 
-      result.push(resSchem)
-      return result
-    }
-     else{
-      return {error: 'schema parse', arg: values}
-     }
+    result.push(values)
   }
+ 
+  //if the schema is undefined, the original format result (2-D Array) is returned
+  if (schema === undefined){
+      return result
+    }
+
+  //parse is run on each split array in result. If successful, the parsed result will be returned
+  for (let i = 0; i < result.length; i++) {
+    if (i !== 0) { //ignores first row
+      const rowPreParse = schema.safeParse(result[i])
+      if (rowPreParse.success) {
+        const resSchem = schema.parse(result[i]) 
+        schemResult.push(resSchem)
+      }
+      else{
+        throw {error: 'schema parse', arg: result[i]}
+      }
+      return schemResult
+    }
+  }
+  
  
 
 }
