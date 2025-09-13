@@ -117,6 +117,9 @@ test("parseCSV works with schemas people", async () => {
       expect(Array.isArray(resultsP[4])).toBe(true)
     }
   }
+  else {
+    throw new Error("result is undefined")
+  }
 });
 
 
